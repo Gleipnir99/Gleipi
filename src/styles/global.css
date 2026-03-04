@@ -41,7 +41,7 @@
   --radius-lg:  22px;
   --spacing:    18px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --nav-height: calc(64px + var(--safe-bottom));
+  --nav-height: 56px;
   --safe-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
 }
 
@@ -85,12 +85,15 @@ input, textarea, select { font-family: inherit; }
 /* ── 하단 탭 네비게이션 ── */
 .bottom-nav {
   display: flex;
-  height: var(--nav-height);
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
-  background: rgba(255,255,255,0.92);
+  flex-direction: row;
+  height: auto;
+  padding: 8px 0;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255,255,255,0.95);
   border-top: 1px solid var(--border);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  flex-shrink: 0;
 }
 
 .nav-item {
@@ -100,10 +103,12 @@ input, textarea, select { font-family: inherit; }
   align-items: center;
   justify-content: center;
   gap: 3px;
+  padding: 4px 0;
   color: var(--text-muted);
   text-decoration: none;
   transition: all 0.2s;
   position: relative;
+  min-width: 0;
 }
 
 .nav-item--active::before {
@@ -120,12 +125,19 @@ input, textarea, select { font-family: inherit; }
 
 .nav-icon { display: flex; align-items: center; justify-content: center; }
 .nav-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   color: var(--text-muted);
+  white-space: nowrap;
 }
-.nav-item--active .nav-label { color: var(--chain); }
+.nav-item--active .nav-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 
 /* ══════════════════════════════════════════════════════════
    공통 화면 레이아웃
@@ -1140,22 +1152,8 @@ input, textarea, select { font-family: inherit; }
 /* ══════════════════════════════════════════════════════════
    룬문자 탭바
    ══════════════════════════════════════════════════════════ */
-.nav-rune {
-  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Segoe UI Symbol', 'Apple Symbols', serif;
-  font-size: 17px;
-  line-height: 1;
-  display: block;
-  letter-spacing: 0;
-  transition: all 0.2s;
-}
-.nav-item--active .nav-rune {
-  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Segoe UI Symbol', 'Apple Symbols', serif;
-  font-size: 17px;
-  line-height: 1;
-  display: block;
-  letter-spacing: 0;
-  transition: all 0.2s;
-}
+
+.nav-item--active 
 
 /* ══════════════════════════════════════════════════════════
    AI 화면 — Askr
