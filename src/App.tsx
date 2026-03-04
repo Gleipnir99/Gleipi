@@ -16,57 +16,13 @@ import SettingsScreen from './screens/SettingsScreen'
 import FreeTimeScreen from './screens/FreeTimeScreen'
 import AIScreen from './screens/AIScreen'
 
-// ── SVG 아이콘 탭바 (iOS Safari 최적화) ─────────────────────
+// ── 룬문자 탭바 ─────────────────────────────────────────────
 const NAV_ITEMS = [
-  {
-    to: '/', label: '할 일',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#5B7AB0' : '#A8B6CC'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="5" width="18" height="16" rx="2"/>
-        <path d="M8 10h8M8 14h5"/>
-        <path d="M7 3v4"/>
-        <path d="M17 3v4"/>
-      </svg>
-    ),
-  },
-  {
-    to: '/calendar', label: '캘린더',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#5B7AB0' : '#A8B6CC'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2"/>
-        <path d="M16 2v4M8 2v4M3 10h18"/>
-        <circle cx="12" cy="16" r="1.5" fill={active ? '#5B7AB0' : '#A8B6CC'}/>
-      </svg>
-    ),
-  },
-  {
-    to: '/freetime', label: '여백',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#5B7AB0' : '#A8B6CC'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M12 7v5l3 3"/>
-      </svg>
-    ),
-  },
-  {
-    to: '/ai', label: 'AI',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#5B7AB0' : '#A8B6CC'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a4 4 0 014 4v1h1a3 3 0 010 6h-1v1a4 4 0 01-8 0v-1H7a3 3 0 010-6h1V6a4 4 0 014-4z"/>
-        <circle cx="9" cy="10" r="1" fill={active ? '#5B7AB0' : '#A8B6CC'}/>
-        <circle cx="15" cy="10" r="1" fill={active ? '#5B7AB0' : '#A8B6CC'}/>
-      </svg>
-    ),
-  },
-  {
-    to: '/settings', label: '설정',
-    icon: (active: boolean) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#5B7AB0' : '#A8B6CC'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-      </svg>
-    ),
-  },
+  { to: '/',         rune: 'ᚹᛟᚱᚲ', label: '할 일'  },
+  { to: '/calendar', rune: 'ᛏᛁᛗᛖ', label: '캘린더' },
+  { to: '/freetime', rune: 'ᚱᛖᛊᛏ', label: '여백'   },
+  { to: '/ai',       rune: 'ᚨᛊᚲ',  label: 'AI'     },
+  { to: '/settings', rune: 'ᚱᚢᚾᚨ', label: '설정'   },
 ]
 
 export default function App() {
@@ -186,16 +142,12 @@ export default function App() {
 
         {/* ── 탭바 — iOS Safari 최적화 ── */}
         <nav className="bottom-nav">
-          {NAV_ITEMS.map(({ to, label, icon }) => (
+          {NAV_ITEMS.map(({ to, rune, label }) => (
             <NavLink key={to} to={to} end
               className={({ isActive }) => `nav-item ${isActive ? 'nav-item--active' : ''}`}
             >
-              {({ isActive }) => (
-                <>
-                  <span className="nav-icon">{icon(isActive)}</span>
-                  <span className="nav-label">{label}</span>
-                </>
-              )}
+                <span className="nav-rune">{rune}</span>
+              <span className="nav-label">{label}</span>
             </NavLink>
           ))}
         </nav>

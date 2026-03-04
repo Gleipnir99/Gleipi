@@ -1609,3 +1609,14 @@ input, textarea, select { font-family: inherit; }
   0%, 100% { opacity: 0.3; }
   50%       { opacity: 1; }
 }
+
+.nav-rune {
+  font-size: 17px;
+  line-height: 1;
+  display: block;
+  letter-spacing: 0;
+  transition: color 0.2s;
+}
+.nav-item--active .nav-rune {
+  color: var(--chain);
+}
