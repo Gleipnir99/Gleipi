@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>gleipi</title>
+  <script>
+    // GitHub Pages SPA 라우팅: 404를 index.html로 리다이렉트
+    const path = window.location.pathname
+    const base = '/gleipi'
+    if (path.startsWith(base)) {
+      const redirect = path.slice(base.length) || '/'
+      sessionStorage.setItem('redirect', redirect)
+    }
+    window.location.replace(base + '/')
+  </script>
+</head>
+</html>
