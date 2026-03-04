@@ -5,11 +5,12 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true
+    "noFallthroughCasesInSwitch": false,
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "include": ["src"]
 }

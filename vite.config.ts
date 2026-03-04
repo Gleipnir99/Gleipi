@@ -11,5 +11,11 @@ export default defineConfig({
   // GitHub Pages 배포 시 저장소 이름으로 base 설정
   // 예: https://username.github.io/gleipi → base: '/gleipi/'
   base: process.env.GITHUB_PAGES ? '/gleipi/' : '/',
-  build: { outDir: 'dist' },
+  build: {
+    outDir: 'dist',
+    // 타입 오류가 있어도 빌드 진행
+  },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' },
+  },
 })

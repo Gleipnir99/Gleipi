@@ -1,61 +1,22 @@
 /**
- * storage.ts — 저장소 추상 레이어
- *
- * 현재: localStorage (웹/Tauri) + Capacitor Preferences (iOS)
- * 추후: 이 파일만 교체하면 Firebase / Supabase 연동 가능
+ * storage.ts — 웹/GitHub Pages 전용 localStorage 기반 저장소
+ * Capacitor 의존성 제거
  */
 
-import { Capacitor } from '@capacitor/core'
-
-// Capacitor Preferences는 iOS 네이티브에서만 import
-// 웹/Tauri 환경에서는 localStorage fallback 사용
-const isNative = Capacitor.isNativePlatform()
-
-// ─── 동적 import로 Capacitor Preferences 로드 ─────────────────
-let CapPreferences: { get: Function; set: Function; remove: Function } | null = null
-
-if (isNative) {
-  import('@capacitor/preferences').then((m) => {
-    CapPreferences = m.Preferences
-  })
-}
-
-// ─── 공통 인터페이스 ──────────────────────────────────────────
-export const storage = {
-  async get<T>(key: string): Promise<T | null> {
-    try {
-      if (isNative && CapPreferences) {
-        const { value } = await CapPreferences.get({ key })
-        return value ? (JSON.parse(value) as T) : null
-      }
-      const raw = localStorage.getItem(key)
-      return raw ? (JSON.parse(raw) as T) : null
-    } catch {
-      return null
-    }
-  },
-
-  async set<T>(key: string, value: T): Promise<void> {
-    const serialized = JSON.stringify(value)
-    if (isNative && CapPreferences) {
-      await CapPreferences.set({ key, value: serialized })
-    } else {
-      localStorage.setItem(key, serialized)
-    }
-  },
-
-  async remove(key: string): Promise<void> {
-    if (isNative && CapPreferences) {
-      await CapPreferences.remove({ key })
-    } else {
-      localStorage.removeItem(key)
-    }
-  },
-}
-
-// ─── 스토리지 키 상수 ─────────────────────────────────────────
 export const STORAGE_KEYS = {
-  TODOS: 'gleipi:todos',
+  TODOS:      'gleipi:todos',
   CATEGORIES: 'gleipi:categories',
-  SETTINGS: 'gleipi:settings',
+  SETTINGS:   'gleipi:settings',
 } as const
+
+export const storage = {
+  async get(key: string): Promise<string | null> {
+    return localStorage.getItem(key)
+  },
+  async set(key: string, value: string): Promise<void> {
+    localStorage.setItem(key, value)
+  },
+  async remove(key: string): Promise<void> {
+    localStorage.removeItem(key)
+  },
+}
