@@ -1141,17 +1141,20 @@ input, textarea, select { font-family: inherit; }
    룬문자 탭바
    ══════════════════════════════════════════════════════════ */
 .nav-rune {
-  font-family: 'Cinzel', 'Segoe UI Historic', 'Noto Sans Runic', serif;
-  font-size: 15px;
+  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Segoe UI Symbol', 'Apple Symbols', serif;
+  font-size: 17px;
   line-height: 1;
   display: block;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
   transition: all 0.2s;
-  color: var(--whisper);
 }
 .nav-item--active .nav-rune {
-  color: var(--chain);
-  text-shadow: 0 0 8px rgba(143,163,200,0.6);
+  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Segoe UI Symbol', 'Apple Symbols', serif;
+  font-size: 17px;
+  line-height: 1;
+  display: block;
+  letter-spacing: 0;
+  transition: all 0.2s;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1166,7 +1169,7 @@ input, textarea, select { font-family: inherit; }
   gap: 12px;
 }
 .ai-rune-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Noto Sans Runic', 'Segoe UI Historic', serif;
   font-size: 28px;
   color: var(--rune);
   opacity: 0.4;
@@ -1438,13 +1441,17 @@ input, textarea, select { font-family: inherit; }
    ══════════════════════════════════════════════════════════ */
 .briefing-controls {
   position: fixed;
-  bottom: calc(var(--nav-height) + 16px);
+  bottom: calc(var(--nav-height) + 28px + var(--safe-bottom));
   right: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  z-index: 20;
+  z-index: 10;
+  pointer-events: none;
+}
+.briefing-controls > * {
+  pointer-events: auto;
 }
 .briefing-btn {
   width: 34px;
