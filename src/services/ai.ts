@@ -17,6 +17,13 @@ export const clearApiKey = (): void => localStorage.removeItem(API_KEY_STORAGE)
 export const hasApiKey = (): boolean => !!getApiKey()
 
 // ── 기본 Claude 호출 ─────────────────────────────────────────
+// API 키 종류 감지
+function detectKeyType(key: string): 'claude' | 'gemini' | 'unknown' {
+  if (key.startsWith('sk-ant')) return 'claude'
+  if (key.startsWith('AIza'))  return 'gemini'
+  return 'unknown'
+}
+
 async function callClaude(systemPrompt: string, userMessage: string): Promise<string> {
   const apiKey = getApiKey()
   if (!apiKey) throw new Error('API_KEY_MISSING')
@@ -171,7 +178,10 @@ export async function chatWithAI(
   const apiKey = getApiKey()
   if (!apiKey) throw new Error('API_KEY_MISSING')
 
-  const upcomingTodos = todos
+  // todos가 배열인지 방어
+  const todoList = Array.isArray(todos) ? todos : []
+
+  const upcomingTodos = todoList
     .filter(t => t.date >= today && !t.isCompleted)
     .slice(0, 15)
     .map(t => `- ${t.date}${t.time ? ' '+t.time : ''}: [${t.categoryId}] ${t.title}`)
@@ -188,6 +198,31 @@ ${upcomingTodos || '(등록된 일정 없음)'}
 일정 추가를 요청하면 다음 형식으로 답하세요:
 [ADD_TODO] {"title":"...", "date":"YYYY-MM-DD", "time":"HH:mm", "categoryHint":"..."}`
 
+  const keyType = detectKeyType(apiKey)
+
+  // ── Gemini API ──────────────────────────────────────────
+  if (keyType === 'gemini') {
+    const geminiMessages = [
+      { role: 'user', parts: [{ text: system }] },
+      { role: 'model', parts: [{ text: '네, 이해했습니다.' }] },
+      ...messages.map(m => ({
+        role: m.role === 'user' ? 'user' : 'model',
+        parts: [{ text: m.content }],
+      })),
+    ]
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: geminiMessages }),
+      }
+    )
+    const data = await res.json()
+    return data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
+  }
+
+  // ── Claude API (기본) ───────────────────────────────────
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
